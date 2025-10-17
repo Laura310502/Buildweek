@@ -1,0 +1,26 @@
+--DA SWITCH--
+enable #sudo
+configure terminal 
+vlan 2 #etc per configurare tutte le varie VLAN
+#name Reception # Per dare nome alla VLAN
+interface vlan2 #per cambiare lo stato da down a up
+description Gateaway per vlan Reception(esempio) 
+ip address 192.168.2.1 255.255.255.0
+no shutdown #per continuare a configurare
+ip dhcp excluded-address 192.168.2.1 #Questo per escludere gli ip relativi al Gateaway 
+
+#Pool di ip per le VLAN
+ip dhcp pool Reception
+network 192.168.2.0 255.255.255.0
+default-router 102.168.2.1
+dns-server 1.1.1.1
+
+#Questo per dirgli in che range si trovano le porte della prima VLAN
+interface range FastEthernet0/1-6  
+switchport mode access
+switchport access vlan2 
+end
+#Per salvare config 
+copy running-config startup-config
+
+
